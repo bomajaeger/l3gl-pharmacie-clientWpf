@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="PharmacieApp.Views.VentesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Loaded="UserControl_Loaded">
+
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="330" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ============ Formulaire de vente ============ -->
+        <Border Grid.Column="0" Background="White" Padding="18" CornerRadius="6"
+                BorderBrush="{StaticResource BrushBordure}" BorderThickness="1"
+                Margin="0,0,12,0">
+            <StackPanel>
+
+                <TextBlock Text="Nouvelle vente" Style="{StaticResource SousTitre}" />
+
+                <TextBlock Text="Médicament *" Style="{StaticResource Libelle}" />
+                <ComboBox Style="{StaticResource ChampListe}"
+                          ItemsSource="{Binding Medicaments}"
+                          SelectedItem="{Binding MedicamentSelectionne}"
+                          DisplayMemberPath="Nom" />
+
+                <TextBlock Text="Quantité *" Style="{StaticResource Libelle}" />
+                <TextBox Style="{StaticResource ChampSaisie}"
+                         Text="{Binding Quantite, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Border Background="{StaticResource BrushPrimaireClair}"
+                        CornerRadius="4" Padding="12" Margin="0,18,0,0">
+                    <StackPanel>
+                        <Grid>
+                            <TextBlock Text="Prix unitaire" Foreground="{StaticResource BrushTexteSecondaire}" />
+                            <TextBlock HorizontalAlignment="Right"
+                                       Text="{Binding PrixUnitaire, Converter={StaticResource Fcfa}}" />
+                        </Grid>
+                        <Grid Margin="0,6,0,0">
+                            <TextBlock Text="Stock disponible" Foreground="{StaticResource BrushTexteSecondaire}" />
+                            <TextBlock HorizontalAlignment="Right" Text="{Binding StockDisponible}" />
+                        </Grid>
+                        <Separator Margin="0,10" />
+                        <Grid>
+                            <TextBlock Text="Total" FontWeight="Bold" FontSize="16" />
+                            <TextBlock HorizontalAlignment="Right" FontWeight="Bold" FontSize="16"
+                                       Foreground="{StaticResource BrushPrimaireFonce}"
+                                       Text="{Binding Total, Converter={StaticResource Fcfa}}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Text="Quantité supérieure au stock disponible."
+                           Foreground="{StaticResource BrushAlerte}"
+                           TextWrapping="Wrap" Margin="0,10,0,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding StockInsuffisant}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <WrapPanel Margin="0,18,0,0">
+                    <Button Content="Enregistrer la vente" Style="{StaticResource BoutonPrimaire}"
+                            Command="{Binding EnregistrerCommand}" />
+                    <Button Content="Effacer" Style="{StaticResource BoutonSecondaire}"
+                            Command="{Binding EffacerCommand}" />
+                </WrapPanel>
+
+                <TextBlock Text="{Binding MessageErreur}" Style="{StaticResource MessageErreur}" />
+
+            </StackPanel>
+        </Border>
+
+        <!-- ============ Historique ============ -->
+        <DockPanel Grid.Column="1">
+
+            <Grid DockPanel.Dock="Top" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Historique des ventes" Style="{StaticResource SousTitre}"
+                               VerticalAlignment="Center" Margin="0" />
+                    <Button Content="Actualiser" Style="{StaticResource BoutonSecondaire}"
+                            Command="{Binding ChargerCommand}" Margin="14,0,0,0" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding NombreVentes, StringFormat='{}{0} vente(s)'}"
+                               Foreground="{StaticResource BrushTexteSecondaire}" Margin="0,0,16,0" />
+                    <TextBlock Text="Chiffre d'affaires :"
+                               Foreground="{StaticResource BrushTexteSecondaire}" Margin="0,0,6,0" />
+                    <TextBlock Text="{Binding ChiffreAffaires, Converter={StaticResource Fcfa}}"
+                               FontWeight="Bold" Foreground="{StaticResource BrushPrimaireFonce}" />
+                </StackPanel>
+            </Grid>
+
+            <DataGrid Style="{StaticResource GrilleDonnees}"
+                      ItemsSource="{Binding Ventes}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Date" Width="Auto"
+                                        Binding="{Binding DateVente, StringFormat=dd/MM/yyyy HH:mm}" />
+                    <DataGridTextColumn Header="Médicament" Binding="{Binding MedicamentNom}" Width="2*" />
+                    <DataGridTextColumn Header="Quantité" Binding="{Binding QuantiteVendue}" Width="Auto" />
+                    <DataGridTextColumn Header="Prix unitaire" Width="Auto"
+                                        Binding="{Binding PrixUnitaire, Converter={StaticResource Fcfa}}" />
+                    <DataGridTextColumn Header="Total" Width="Auto"
+                                        Binding="{Binding PrixTotal, Converter={StaticResource Fcfa}}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </DockPanel>
+    </Grid>
+</UserControl>

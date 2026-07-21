@@ -40,8 +40,7 @@
             </TabItem>
 
             <TabItem Header="Ventes">
-                <TextBlock Text="VentesView (étape 6.6)"
-                           Margin="20" Foreground="{StaticResource BrushTexteSecondaire}" />
+                <views:VentesView />
             </TabItem>
 
         </TabControl>
