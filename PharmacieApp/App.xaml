@@ -1,14 +1,15 @@
 ﻿<Application x:Class="PharmacieApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:helpers="clr-namespace:PharmacieApp.Helpers"
              StartupUri="Views/LoginWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- Importe la feuille de style pour toute l'application,
-                     comme un <link rel="stylesheet"> en HTML -->
                 <ResourceDictionary Source="Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <helpers:FcfaConverter x:Key="Fcfa" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

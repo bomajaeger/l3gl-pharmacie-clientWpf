@@ -32,8 +32,7 @@
         <TabControl Margin="12" Background="Transparent" BorderThickness="0">
 
             <TabItem Header="Médicaments">
-                <TextBlock Text="MedicamentsView (étape 6.5)"
-                           Margin="20" Foreground="{StaticResource BrushTexteSecondaire}" />
+                <views:MedicamentsView />
             </TabItem>
 
             <TabItem Header="Fournisseurs">
