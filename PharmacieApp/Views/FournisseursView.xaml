@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="PharmacieApp.Views.FournisseursView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Loaded="UserControl_Loaded">
+
+    <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="320" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- ============ Formulaire ============ -->
+        <Border Grid.Column="0" Background="White" Padding="18" CornerRadius="6"
+                BorderBrush="{StaticResource BrushBordure}" BorderThickness="1"
+                Margin="0,0,12,0">
+            <StackPanel>
+
+                <TextBlock Text="{Binding TitreFormulaire}" Style="{StaticResource SousTitre}" />
+
+                <TextBlock Text="Nom *" Style="{StaticResource Libelle}" />
+                <TextBox Style="{StaticResource ChampSaisie}"
+                         Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Contact" Style="{StaticResource Libelle}" />
+                <TextBox Style="{StaticResource ChampSaisie}"
+                         Text="{Binding Contact, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Téléphone" Style="{StaticResource Libelle}" />
+                <TextBox Style="{StaticResource ChampSaisie}"
+                         Text="{Binding Telephone, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Adresse" Style="{StaticResource Libelle}" />
+                <TextBox Style="{StaticResource ChampSaisie}"
+                         Text="{Binding Adresse, UpdateSourceTrigger=PropertyChanged}" />
+
+                <WrapPanel Margin="0,18,0,0">
+                    <Button Content="Ajouter"   Style="{StaticResource BoutonPrimaire}"
+                            Command="{Binding AjouterCommand}" />
+                    <Button Content="Modifier"  Style="{StaticResource BoutonPrimaire}"
+                            Command="{Binding ModifierCommand}" />
+                    <Button Content="Supprimer" Style="{StaticResource BoutonDanger}"
+                            Command="{Binding SupprimerCommand}" />
+                    <Button Content="Effacer"   Style="{StaticResource BoutonSecondaire}"
+                            Command="{Binding EffacerCommand}" />
+                </WrapPanel>
+
+                <TextBlock Text="{Binding MessageErreur}" Style="{StaticResource MessageErreur}" />
+
+            </StackPanel>
+        </Border>
+
+        <!-- ============ Liste ============ -->
+        <DockPanel Grid.Column="1">
+
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="Fournisseurs" Style="{StaticResource SousTitre}"
+                           VerticalAlignment="Center" Margin="0" />
+                <Button Content="Actualiser" Style="{StaticResource BoutonSecondaire}"
+                        Command="{Binding ChargerCommand}" Margin="14,0,0,0" />
+            </StackPanel>
+
+            <DataGrid Style="{StaticResource GrilleDonnees}"
+                      ItemsSource="{Binding Fournisseurs}"
+                      SelectedItem="{Binding Selection}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nom"       Binding="{Binding Nom}"       Width="2*" />
+                    <DataGridTextColumn Header="Contact"   Binding="{Binding Contact}"   Width="*" />
+                    <DataGridTextColumn Header="Téléphone" Binding="{Binding Telephone}" Width="*" />
+                    <DataGridTextColumn Header="Adresse"   Binding="{Binding Adresse}"   Width="2*" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </DockPanel>
+    </Grid>
+</UserControl>
