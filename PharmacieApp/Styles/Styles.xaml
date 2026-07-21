@@ -1,0 +1,265 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--
+        Feuille de style de l'application.
+        Rôle équivalent à un fichier CSS : on définit ici la palette et les
+        "classes" de style, appliquées ensuite dans les vues avec
+        Style="{StaticResource NomDuStyle}".
+    -->
+
+    <!-- ============ 1. PALETTE ============ -->
+    <!-- Vert de la croix de pharmacie en couleur principale. -->
+
+    <Color x:Key="ColorPrimaire">#00875A</Color>
+    <Color x:Key="ColorPrimaireFonce">#00694A</Color>
+    <Color x:Key="ColorPrimaireClair">#E6F4EF</Color>
+
+    <Color x:Key="ColorDanger">#B3261E</Color>
+    <Color x:Key="ColorDangerFonce">#8C1D18</Color>
+
+    <!-- Alertes métier : stock bas et péremption -->
+    <Color x:Key="ColorAlerte">#B26A00</Color>
+    <Color x:Key="ColorAlerteFond">#FFF4E0</Color>
+    <Color x:Key="ColorPerimeFond">#FDECEA</Color>
+
+    <!-- Neutres -->
+    <Color x:Key="ColorFond">#F5F7F6</Color>
+    <Color x:Key="ColorBordure">#D6DCDA</Color>
+    <Color x:Key="ColorTexte">#1F2A26</Color>
+    <Color x:Key="ColorTexteSecondaire">#5F6E68</Color>
+
+    <!-- Les contrôles WPF attendent des Brush, pas des Color. -->
+    <SolidColorBrush x:Key="BrushPrimaire"        Color="{StaticResource ColorPrimaire}" />
+    <SolidColorBrush x:Key="BrushPrimaireFonce"   Color="{StaticResource ColorPrimaireFonce}" />
+    <SolidColorBrush x:Key="BrushPrimaireClair"   Color="{StaticResource ColorPrimaireClair}" />
+    <SolidColorBrush x:Key="BrushDanger"          Color="{StaticResource ColorDanger}" />
+    <SolidColorBrush x:Key="BrushDangerFonce"     Color="{StaticResource ColorDangerFonce}" />
+    <SolidColorBrush x:Key="BrushAlerte"          Color="{StaticResource ColorAlerte}" />
+    <SolidColorBrush x:Key="BrushAlerteFond"      Color="{StaticResource ColorAlerteFond}" />
+    <SolidColorBrush x:Key="BrushPerimeFond"      Color="{StaticResource ColorPerimeFond}" />
+    <SolidColorBrush x:Key="BrushFond"            Color="{StaticResource ColorFond}" />
+    <SolidColorBrush x:Key="BrushBordure"         Color="{StaticResource ColorBordure}" />
+    <SolidColorBrush x:Key="BrushTexte"           Color="{StaticResource ColorTexte}" />
+    <SolidColorBrush x:Key="BrushTexteSecondaire" Color="{StaticResource ColorTexteSecondaire}" />
+
+    <FontFamily x:Key="PoliceApp">Segoe UI</FontFamily>
+
+    <!-- ============ 2. STYLE IMPLICITE ============ -->
+    <!-- Sans x:Key : s'applique à toutes les fenêtres automatiquement. -->
+
+    <Style TargetType="Window">
+        <Setter Property="FontFamily" Value="{StaticResource PoliceApp}" />
+        <Setter Property="Background" Value="{StaticResource BrushFond}" />
+        <Setter Property="Foreground" Value="{StaticResource BrushTexte}" />
+        <Setter Property="FontSize"   Value="14" />
+    </Style>
+
+    <!-- ============ 3. TEXTES ============ -->
+
+    <Style x:Key="TitrePage" TargetType="TextBlock">
+        <Setter Property="FontSize"   Value="22" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{StaticResource BrushPrimaireFonce}" />
+        <Setter Property="Margin"     Value="0,0,0,16" />
+    </Style>
+
+    <Style x:Key="SousTitre" TargetType="TextBlock">
+        <Setter Property="FontSize"   Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin"     Value="0,0,0,10" />
+    </Style>
+
+    <Style x:Key="Libelle" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize"   Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource BrushTexteSecondaire}" />
+        <Setter Property="Margin"     Value="0,8,0,3" />
+    </Style>
+
+    <!-- Message d'erreur, masqué tant qu'il est vide -->
+    <Style x:Key="MessageErreur" TargetType="TextBlock">
+        <Setter Property="Foreground"   Value="{StaticResource BrushDanger}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Margin"       Value="0,8,0,0" />
+        <Style.Triggers>
+            <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ============ 4. CHAMPS DE SAISIE ============ -->
+    <!-- BasedOn ne fonctionne qu'entre styles de même TargetType. -->
+
+    <Style x:Key="ChampSaisie" TargetType="TextBox">
+        <Setter Property="Padding"         Value="7,5" />
+        <Setter Property="Height"          Value="34" />
+        <Setter Property="Background"      Value="White" />
+        <Setter Property="BorderBrush"     Value="{StaticResource BrushBordure}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <!-- Équivalent de :focus en CSS -->
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush"     Value="{StaticResource BrushPrimaire}" />
+                <Setter Property="BorderThickness" Value="2" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="#EFEFEF" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Zone multiligne, pour la description d'un médicament -->
+    <Style x:Key="ChampSaisieMultiligne" TargetType="TextBox"
+           BasedOn="{StaticResource ChampSaisie}">
+        <Setter Property="Height"                       Value="70" />
+        <Setter Property="TextWrapping"                 Value="Wrap" />
+        <Setter Property="AcceptsReturn"                Value="True" />
+        <Setter Property="VerticalContentAlignment"     Value="Top" />
+        <Setter Property="VerticalScrollBarVisibility"  Value="Auto" />
+    </Style>
+
+    <Style x:Key="ChampMotDePasse" TargetType="PasswordBox">
+        <Setter Property="Padding"         Value="7,5" />
+        <Setter Property="Height"          Value="34" />
+        <Setter Property="Background"      Value="White" />
+        <Setter Property="BorderBrush"     Value="{StaticResource BrushBordure}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush"     Value="{StaticResource BrushPrimaire}" />
+                <Setter Property="BorderThickness" Value="2" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="ChampListe" TargetType="ComboBox">
+        <Setter Property="Height"          Value="34" />
+        <Setter Property="Padding"         Value="7,5" />
+        <Setter Property="BorderBrush"     Value="{StaticResource BrushBordure}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="ChampDate" TargetType="DatePicker">
+        <Setter Property="Height"          Value="34" />
+        <Setter Property="Background"      Value="White" />
+        <Setter Property="BorderBrush"     Value="{StaticResource BrushBordure}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!-- ============ 5. BOUTONS ============ -->
+    <!--
+        Le ControlTemplate remplace l'apparence native de Windows.
+        Conséquence : l'état désactivé n'est plus géré automatiquement,
+        il faut donc le traiter nous mêmes via un Trigger IsEnabled.
+    -->
+
+    <Style x:Key="BoutonBase" TargetType="Button">
+        <Setter Property="Padding"         Value="16,9" />
+        <Setter Property="Margin"          Value="0,4,8,4" />
+        <Setter Property="Foreground"      Value="White" />
+        <Setter Property="FontWeight"      Value="SemiBold" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor"          Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="4"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.45" />
+                <Setter Property="Cursor"  Value="Arrow" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BoutonPrimaire" TargetType="Button" BasedOn="{StaticResource BoutonBase}">
+        <Setter Property="Background" Value="{StaticResource BrushPrimaire}" />
+        <Style.Triggers>
+            <!-- Équivalent de :hover en CSS, sauf si le bouton est désactivé -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsEnabled"   Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource BrushPrimaireFonce}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BoutonDanger" TargetType="Button" BasedOn="{StaticResource BoutonBase}">
+        <Setter Property="Background" Value="{StaticResource BrushDanger}" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsEnabled"   Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource BrushDangerFonce}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Bouton discret : Annuler, Effacer, Actualiser -->
+    <Style x:Key="BoutonSecondaire" TargetType="Button" BasedOn="{StaticResource BoutonBase}">
+        <Setter Property="Background"      Value="White" />
+        <Setter Property="Foreground"      Value="{StaticResource BrushTexte}" />
+        <Setter Property="BorderBrush"     Value="{StaticResource BrushBordure}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="IsEnabled"   Value="True" />
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{StaticResource BrushPrimaireClair}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- ============ 6. TABLEAUX ============ -->
+
+    <Style x:Key="EnteteGrille" TargetType="DataGridColumnHeader">
+        <Setter Property="Background"      Value="{StaticResource BrushPrimaireClair}" />
+        <Setter Property="Foreground"      Value="{StaticResource BrushPrimaireFonce}" />
+        <Setter Property="FontWeight"      Value="SemiBold" />
+        <Setter Property="Padding"         Value="10,8" />
+        <Setter Property="BorderBrush"     Value="{StaticResource BrushBordure}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="GrilleDonnees" TargetType="DataGrid">
+        <Setter Property="AutoGenerateColumns"      Value="False" />
+        <Setter Property="CanUserAddRows"           Value="False" />
+        <Setter Property="IsReadOnly"               Value="True" />
+        <Setter Property="SelectionMode"            Value="Single" />
+        <Setter Property="SelectionUnit"            Value="FullRow" />
+        <Setter Property="Background"               Value="White" />
+        <Setter Property="RowBackground"            Value="White" />
+        <Setter Property="AlternatingRowBackground" Value="#FAFBFB" />
+        <Setter Property="BorderBrush"              Value="{StaticResource BrushBordure}" />
+        <Setter Property="BorderThickness"          Value="1" />
+        <Setter Property="RowHeight"                Value="34" />
+        <Setter Property="GridLinesVisibility"      Value="Horizontal" />
+        <Setter Property="HorizontalGridLinesBrush" Value="#EEF1F0" />
+        <Setter Property="HeadersVisibility"        Value="Column" />
+        <Setter Property="ColumnHeaderStyle"        Value="{StaticResource EnteteGrille}" />
+    </Style>
+
+</ResourceDictionary>
