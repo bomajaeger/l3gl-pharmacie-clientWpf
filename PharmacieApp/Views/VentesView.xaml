@@ -100,6 +100,18 @@
 
             <DataGrid Style="{StaticResource GrilleDonnees}"
                       ItemsSource="{Binding Ventes}">
+
+                <DataGrid.Resources>
+                    <!-- Neutralise le surlignage bleu/gris système, qui
+                         recouvrirait les couleurs d'alerte des lignes. -->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                     Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                     Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                     Color="{StaticResource ColorTexte}" />
+                </DataGrid.Resources>
+                
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Date" Width="Auto"
                                         Binding="{Binding DateVente, StringFormat=dd/MM/yyyy HH:mm}" />

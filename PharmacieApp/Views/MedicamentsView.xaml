@@ -121,9 +121,29 @@
                                 <Setter Property="Background" Value="{StaticResource BrushPerimeFond}" />
                                 <Setter Property="Foreground" Value="{StaticResource BrushDanger}" />
                             </DataTrigger>
+
+                            <!-- La sélection par défaut peint un fond opaque qui
+                                 masquerait la couleur d'alerte. On la remplace par
+                                 une bordure gauche marquée, sans toucher au fond. -->
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource BrushPrimaire}" />
+                                <Setter Property="BorderThickness" Value="4,0,0,0" />
+                                <Setter Property="FontWeight" Value="SemiBold" />
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
+
+                <DataGrid.Resources>
+                    <!-- Neutralise le surlignage bleu/gris système, qui
+                         recouvrirait les couleurs d'alerte des lignes. -->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                     Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                     Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                     Color="{StaticResource ColorTexte}" />
+                </DataGrid.Resources>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="2*" />

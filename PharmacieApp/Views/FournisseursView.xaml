@@ -62,6 +62,18 @@
             <DataGrid Style="{StaticResource GrilleDonnees}"
                       ItemsSource="{Binding Fournisseurs}"
                       SelectedItem="{Binding Selection}">
+
+                <DataGrid.Resources>
+                    <!-- Neutralise le surlignage bleu/gris système, qui
+                         recouvrirait les couleurs d'alerte des lignes. -->
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                     Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                     Color="Transparent" />
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                     Color="{StaticResource ColorTexte}" />
+                </DataGrid.Resources>
+                
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nom"       Binding="{Binding Nom}"       Width="2*" />
                     <DataGridTextColumn Header="Contact"   Binding="{Binding Contact}"   Width="*" />
