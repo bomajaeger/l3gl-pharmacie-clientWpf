@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PharmacieApp.Views.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Connexion — Gestion de Pharmacie"
+        Title="Connexion — Big Pharma"
         Height="420" Width="400"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
@@ -11,7 +11,7 @@
             CornerRadius="6">
         <StackPanel VerticalAlignment="Center">
 
-            <TextBlock Text="Gestion de Pharmacie"
+            <TextBlock Text="Big Pharma"
                        Style="{StaticResource TitrePage}"
                        HorizontalAlignment="Center" />
 

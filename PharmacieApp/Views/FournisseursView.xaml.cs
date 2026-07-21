@@ -18,7 +18,6 @@ public partial class FournisseursView : UserControl
     // un appel réseau dans un constructeur bloquerait la création de la vue.
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-        if (_vm.Fournisseurs.Count == 0)
-            _vm.ChargerCommand.Execute(null);
+        _vm.ChargerCommand.Execute(null);
     }
 }

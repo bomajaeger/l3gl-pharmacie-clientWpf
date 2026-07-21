@@ -43,6 +43,12 @@ public static class ApiService
         Converters = { new MySqlDateTimeConverter() }
     };
 
+    /// <summary>
+    /// Déclenché quand l'API rejette le token (expiré ou invalide).
+    /// L'application doit alors renvoyer l'utilisateur vers le login.
+    /// </summary>
+    public static event Action? SessionExpiree;
+
     // --- Méthodes publiques -----------------------------------------
 
     public static Task<T> GetAsync<T>(string route)
@@ -116,9 +122,21 @@ public static class ApiService
 
         if (resultat is null || !resultat.Success)
         {
-            throw new ApiException(
+            var erreur = new ApiException(
                 resultat?.Message ?? "Erreur inconnue.",
                 reponse.StatusCode);
+
+            // Un 401 sur une requête authentifiée signifie que la session
+            // n'est plus valable : on prévient l'application entière.
+            // Le login lui-même est exclu, sinon un mot de passe erroné
+            // déclencherait une déconnexion.
+            if (erreur.EstNonAutorise && AuthService.EstConnecte && route != "login")
+            {
+                AuthService.Deconnecter();
+                SessionExpiree?.Invoke();
+            }
+
+            throw erreur;
         }
 
         return resultat.Data!;
