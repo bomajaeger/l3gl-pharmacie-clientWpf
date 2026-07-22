@@ -93,12 +93,14 @@ public static class ApiService
         }
         catch (TaskCanceledException)
         {
+            Logger.Erreur($"Timeout sur {methode} {route}");
             throw new ApiException(
                 "Le serveur ne répond pas. Vérifiez qu'Apache est démarré.",
                 HttpStatusCode.RequestTimeout);
         }
-        catch (HttpRequestException)
+        catch (HttpRequestException ex)
         {
+            Logger.Erreur($"API injoignable sur {methode} {route}", ex);
             throw new ApiException(
                 "Impossible de joindre l'API. Vérifiez que XAMPP est lancé.",
                 HttpStatusCode.ServiceUnavailable);
@@ -112,9 +114,10 @@ public static class ApiService
         {
             resultat = JsonSerializer.Deserialize<ApiResponse<T>>(contenu, JsonOptions);
         }
-        catch (JsonException)
+        catch (JsonException ex)
         {
             // L'API a renvoyé du HTML (erreur PHP non interceptée)
+            Logger.Erreur($"Réponse illisible sur {methode} {route}", ex);
             throw new ApiException(
                 "Réponse illisible du serveur : " + Tronquer(contenu),
                 reponse.StatusCode);
@@ -126,10 +129,8 @@ public static class ApiService
                 resultat?.Message ?? "Erreur inconnue.",
                 reponse.StatusCode);
 
-            // Un 401 sur une requête authentifiée signifie que la session
-            // n'est plus valable : on prévient l'application entière.
-            // Le login lui-même est exclu, sinon un mot de passe erroné
-            // déclencherait une déconnexion.
+            Logger.Erreur($"Erreur API {(int)reponse.StatusCode} sur {methode} {route} : {erreur.Message}");
+
             if (erreur.EstNonAutorise && AuthService.EstConnecte && route != "login")
             {
                 AuthService.Deconnecter();

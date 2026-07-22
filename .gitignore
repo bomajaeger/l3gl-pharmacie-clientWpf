@@ -2,6 +2,9 @@
 bin/
 obj/
 
+# Logs
+logs/
+
 # Visual Studio
 .vs/
 *.user
@@ -9,3 +12,4 @@ obj/
 
 # Windows
 Thumbs.db
+
